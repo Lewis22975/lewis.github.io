@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lewis Dickson Kariuki Macharia | Web Developer & Tech Innovator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Fraunces:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #080c0e;
+      --surface: #0f1518;
+      --border: #1e2b30;
+      --accent: #00e5a0;
+      --accent2: #ff6b35;
+      --text: #e8f0f2;
+      --muted: #6b8a94;
+      --card: #111b1f;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.1s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transition: all 0.15s ease;
+      opacity: 0.5;
+    }
+
+    /* Noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.3;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: 1.5rem 4rem;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 100;
+      border-bottom: 1px solid transparent;
+      transition: all 0.3s ease;
+    }
+    nav.scrolled {
+      background: rgba(8,12,14,0.9);
+      backdrop-filter: blur(20px);
+      border-color: var(--border);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 50%, rgba(0,229,160,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(255,107,53,0.04) 0%, transparent 60%);
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.3;
+      mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+    }
+
+    .hero-left { position: relative; z-index: 2; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(0,229,160,0.08);
+      border: 1px solid rgba(0,229,160,0.2);
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .hero-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3.5rem, 6vw, 6rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.5rem;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero-name span { color: var(--accent); }
+
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.2rem, 2.5vw, 2rem);
+      color: var(--muted);
+      margin-bottom: 2rem;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-desc {
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 420px;
+      margin-bottom: 3rem;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-cta {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+    .btn {
+      padding: 0.85rem 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: none;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #080c0e;
+      font-weight: 600;
+    }
+    .btn-primary:hover { background: #00ffb3; transform: translateY(-2px); }
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    .hero-right {
+      position: relative; z-index: 2;
+      display: flex; justify-content: center; align-items: center;
+      animation: fadeUp 0.8s 0.5s ease both;
+    }
+
+    .hero-visual {
+      width: 340px; height: 340px;
+      position: relative;
+    }
+    .hero-visual-ring {
+      position: absolute; inset: 0;
+      border: 1px solid rgba(0,229,160,0.15);
+      border-radius: 50%;
+      animation: spin 20s linear infinite;
+    }
+    .hero-visual-ring:nth-child(2) {
+      inset: 20px;
+      border-color: rgba(255,107,53,0.1);
+      animation-direction: reverse;
+      animation-duration: 15s;
+    }
+    .hero-visual-inner {
+      position: absolute; inset: 50px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .hero-visual-inner .big-icon {
+      font-size: 3rem;
+    }
+    .hero-visual-inner p {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .orbit-dot {
+      position: absolute;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      top: 10px; left: 50%;
+      transform-origin: 0 160px;
+      box-shadow: 0 0 10px var(--accent);
+    }
+    .orbit-dot2 {
+      position: absolute;
+      width: 6px; height: 6px;
+      background: var(--accent2);
+      border-radius: 50%;
+      top: 30px; left: 50%;
+      transform-origin: 0 140px;
+      animation: spin 15s linear infinite reverse;
+      box-shadow: 0 0 8px var(--accent2);
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      color: var(--accent);
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 0.4rem;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 6rem 4rem;
+    }
+
+    .section-label {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      max-width: 80px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 3rem;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+    .about-text p strong { color: var(--text); }
+
+    .about-skills h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .skill-tags {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .skill-tag {
+      padding: 0.4rem 0.9rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 0.72rem;
+      color: var(--text);
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+    .skill-tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,229,160,0.05);
+    }
+    .skill-tag.highlight {
+      border-color: rgba(0,229,160,0.3);
+      color: var(--accent);
+      background: rgba(0,229,160,0.05);
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    .project-card:hover {
+      border-color: rgba(0,229,160,0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .project-icon {
+      font-size: 1.8rem;
+    }
+    .project-links { display: flex; gap: 0.5rem; }
+    .project-link {
+      width: 32px; height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+    .project-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    .project-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .project-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    .project-tags {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+    }
+    .project-tag {
+      padding: 0.25rem 0.6rem;
+      background: rgba(0,229,160,0.06);
+      border: 1px solid rgba(0,229,160,0.15);
+      border-radius: 3px;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+    }
+
+    /* EXPERIENCE / EDUCATION */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .timeline-item {
+      position: relative;
+      padding-bottom: 2.5rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.35rem;
+      top: 0.3rem;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+    }
+    .timeline-date {
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+    .timeline-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+    }
+    .timeline-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+    .timeline-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* CONTACT */
+    .contact-section {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      padding: 6rem 4rem;
+    }
+    .contact-section .section-label { justify-content: center; }
+    .contact-section .section-label::after { display: none; }
+    .contact-big {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .contact-big span { color: var(--accent); }
+    .contact-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 3rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.8;
+    }
+    .contact-links {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 4rem;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--border);
+    }
+    footer p { font-size: 0.7rem; color: var(--muted); }
+    .footer-accent { color: var(--accent); }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
+      .hero-right { display: none; }
+      .stats-bar { grid-template-columns: repeat(2,1fr); padding: 2rem 1.5rem; }
+      section { padding: 4rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+      .contact-section { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-logo">LM.</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+
+    <div class="hero-left">
+      <div class="hero-tag">Available for projects</div>
+      <h1 class="hero-name">Lewis<br/><span>Macharia</span></h1>
+      <p class="hero-title">Web Developer & Tech Innovator</p>
+      <p class="hero-desc">
+        Building digital solutions for African businesses. From Murang'a County, Kenya —
+        turning ideas into real, impactful technology.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-visual">
+        <div class="hero-visual-ring"></div>
+        <div class="hero-visual-ring"></div>
+        <div class="orbit-dot"></div>
+        <div class="orbit-dot2"></div>
+        <div class="hero-visual-inner">
+          <div class="big-icon">🇰🇪</div>
+          <p>Nairobi · Kenya</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num">1+</div>
+      <div class="stat-label">Client Projects</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">&lt;20</div>
+      <div class="stat-label">Years Old</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">KE</div>
+      <div class="stat-label">Based In Kenya</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Ambition</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-label">01 — About</div>
+    <h2 class="section-title">Developer.<br/>Innovator. Builder.</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I'm a <strong>freelance web developer and ICT student</strong> based in Kenya, currently
+          pursuing a Diploma in ICT at the University of Embu. I build functional, 
+          modern web applications that solve real problems for real businesses.
+        </p>
+        <p>
+          My journey into technology was sparked by curiosity — a fascination with how software
+          can change lives. Before turning 20, I had already delivered my first client project:
+          a <strong>full-stack web application with M-Pesa payment integration</strong>, 
+          Kenya's world-famous mobile payment platform.
+        </p>
+        <p>
+          I believe technology is a bridge between talent and opportunity. My mission is to 
+          build platforms and solutions that empower young Kenyans to participate in 
+          the <strong>global digital economy</strong> — regardless of where they come from.
+        </p>
+      </div>
+      <div class="about-skills">
+        <h3>Frontend</h3>
+        <div class="skill-tags">
+          <span class="skill-tag highlight">HTML5</span>
+          <span class="skill-tag highlight">CSS3</span>
+          <span class="skill-tag highlight">JavaScript</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Responsive Design</span>
+        </div>
+        <h3>Backend & Integration</h3>
+        <div class="skill-tags">
+          <span class="skill-tag highlight">Python</span>
+          <span class="skill-tag highlight">M-Pesa API</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">SQL / Databases</span>
+          <span class="skill-tag">REST APIs</span>
+        </div>
+        <h3>Tools & Other</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Git & GitHub</span>
+          <span class="skill-tag">VB.NET</span>
+          <span class="skill-tag">GIS</span>
+          <span class="skill-tag">AI Fundamentals</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="section-label">02 — Projects</div>
+    <h2 class="section-title">Things I've<br/>Built.</h2>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-icon">🏪</div>
+          <div class="project-links">
+            <a href="#" class="project-link" title="View Project">↗</a>
+          </div>
+        </div>
+        <h3 class="project-title">Liquor Store Web App</h3>
+        <p class="project-desc">
+          A full-stack web application built for a local business client. Features a complete
+          product catalog, inventory management, and seamless M-Pesa payment integration — 
+          enabling customers to pay via mobile money directly through the platform.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">HTML/CSS</span>
+          <span class="project-tag">JavaScript</span>
+          <span class="project-tag">Python</span>
+          <span class="project-tag">M-Pesa API</span>
+          <span class="project-tag">Client Project</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-icon">📊</div>
+          <div class="project-links">
+            <a href="#" class="project-link" title="View Project">↗</a>
+          </div>
+        </div>
+        <h3 class="project-title">Portfolio Website</h3>
+        <p class="project-desc">
+          This very website — designed and built from scratch as a showcase of frontend development
+          skills. Features custom animations, responsive design, and a distinctive dark aesthetic 
+          built entirely with HTML, CSS and vanilla JavaScript.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">HTML5</span>
+          <span class="project-tag">CSS3</span>
+          <span class="project-tag">JavaScript</span>
+          <span class="project-tag">Animations</span>
+        </div>
+      </div>
+
+      <div class="project-card" style="border-style: dashed; opacity: 0.6;">
+        <div class="project-header">
+          <div class="project-icon">🚀</div>
+        </div>
+        <h3 class="project-title">Next Project</h3>
+        <p class="project-desc">
+          Something new is coming. I'm always building, learning, and exploring new ideas
+          at the intersection of technology and African innovation.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Coming Soon</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-label">03 — Experience & Education</div>
+    <h2 class="section-title">My Journey<br/>So Far.</h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-date">2024 — Present</div>
+        <div class="timeline-title">Freelance Web Developer</div>
+        <div class="timeline-sub">Self-employed · Kenya</div>
+        <div class="timeline-desc">
+          Building web applications for local businesses. Delivered a full-stack liquor store 
+          management system with M-Pesa integration as a first paid client project.
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">2023 — Present</div>
+        <div class="timeline-title">Diploma in Information & Communication Technology</div>
+        <div class="timeline-sub">University of Embu · KNEC Module 2</div>
+        <div class="timeline-desc">
+          Studying database management, visual programming (VB.NET), systems analysis, 
+          GIS, quantitative techniques, and AI fundamentals. Credit-level academic performance.
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">2019 — 2023</div>
+        <div class="timeline-title">Kenya Certificate of Secondary Education (KCSE)</div>
+        <div class="timeline-sub">Secondary School · Kenya</div>
+        <div class="timeline-desc">
+          Completed secondary education while developing a self-taught foundation 
+          in technology, programming, and digital skills.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <div class="contact-section" id="contact">
+    <div class="section-label">04 — Contact</div>
+    <h2 class="contact-big">Let's Build<br/><span>Something.</span></h2>
+    <p class="contact-sub">
+      Have a project in mind? Looking for a developer who understands the Kenyan market?
+      I'd love to hear from you.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:your@email.com" class="btn btn-primary">Send Me an Email</a>
+      <a href="https://github.com/Lewis22975" class="btn btn-ghost" target="_blank">GitHub Profile</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 <span class="footer-accent">Lewis Dickson Kariuki Macharia</span> · Murang'a County, Kenya 🇰🇪</p>
+    <p style="font-size:0.65rem;">Built with HTML, CSS & JavaScript</p>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx - 6 + 'px';
+      cursor.style.top = my - 6 + 'px';
+    });
+
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx - 18 + 'px';
+      ring.style.top = ry - 18 + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'scale(2)';
+        ring.style.transform = 'scale(1.5)';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'scale(1)';
+        ring.style.transform = 'scale(1)';
+      });
+    });
+
+    // Nav scroll
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Orbit animation for hero dot
+    const dot = document.querySelector('.orbit-dot');
+    let angle = 0;
+    function rotateDot() {
+      angle += 0.5;
+      dot.style.transform = `rotate(${angle}deg)`;
+      requestAnimationFrame(rotateDot);
+    }
+    rotateDot();
+
+    // Fade in on scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.project-card, .timeline-item, .stat').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
